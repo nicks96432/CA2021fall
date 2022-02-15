@@ -1,0 +1,79 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}
+\usepackage[
+    a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm
+]{geometry}
+\usepackage{minted}
+
+\setCJKmainfont{Noto Sans CJK TC}
+\setmainfont{Noto Sans CJK TC}
+
+\setlength{\parindent}{0cm}
+\renewcommand{\baselinestretch}{1.5}
+
+\begin{document}
+
+\section*{Modules Explanation}
+
+\begin{enumerate}
+    \item Adder
+
+          這個circuit會讀兩個32 bit的整數，然後輸出兩者的和，不考慮溢位。
+
+    \item ALU\textunderscore Control
+
+          這個circuit會讀一個10 bit的\mintinline{text}{funct}和2 bit的
+          \mintinline{text}{ALUOp}，\mintinline{text}{funct}由instruction
+          的\mintinline{text}{funct7}和\mintinline{text}{funct3}接在一起而成，
+          \mintinline{text}{ALUOp}則是Control的輸出之一。ALU\textunderscore
+          Control會先根據\mintinline{text}{ALUOp}是10還是00判斷instruction是
+          R-Type還是I-Type，然後再根據\mintinline{text}{funct}決定要輸出什麼
+          3 bit \mintinline{text}{AluCtrl}給ALU。
+
+    \item ALU
+
+          這個circuit會讀入兩個32 bit的有號整數，及ALU\textunderscore Control
+          輸出的3bit \mintinline{text}{AluCtrl}，然後根據
+          \mintinline{text}{AluCtrl}決定要輸出以輸入的兩個整數的哪種運算結果，
+          不考慮溢位。有ADD、SUB、MUL、AND、XOR、SLL、SRA這7種運算。另外還會輸出Zero，
+          因為在這個作業不會用到，所以我就把它設為0了。在實作\mintinline{asm}{srai}的
+          時候，因為immediate只有5個bit，所以要把第二個整數input和11111做bit and
+          ，不然會錯。
+
+    \item Control
+
+          這個circuit會從instruction中讀7 bit的\mintinline{text}{opcode}，然後
+          根據\mintinline{text}{opcode}代表的instruction來輸出要給ALU\textunderscore
+          Control、ALU、register的訊號。如果\mintinline{text}{opcode}代表的是
+          R-Type instruction，就把\mintinline{text}{ALUOp}設為10並把
+          \mintinline{text}{ALUSrc}恆設為0。如果是I-Type instruction，則把
+          \mintinline{text}{ALUOp}設為00並把\mintinline{text}{ALUSrc}設為1。
+          因為這次的作業只有這兩個type的instruction，而且都需要寫入register，所以我把
+          \mintinline{text}{RegWrite}恆設為1。
+    \item CPU
+
+          在這裡根據spec的datapath (Figure 1)把所有的module接在一起。根據每條在datapath
+          上的線(有分叉的算同一條)都宣告一條wire，然後在\mintinline{text}{CPU.v}裡面的
+          括號填入對應的wire。我在這裡還加了一個wire four恆等於4，專門送到Adder裡面幫PC
+          做加法。
+
+    \item MUX32
+
+          這個circuit的input有2個32 bit的整數和1 bit的\mintinline{text}{select}。
+          如果\mintinline{text}{select}是0的話就輸出第一個整數，否則輸出第二個整數。
+
+    \item Sign\textunderscore Extend
+
+          這個circuit會從instruction的最左邊12 bit讀入整數，然後根據它的正負號決定
+          要在most significant bit的地方補20個0或1，輸入是正數就補0，負就補1。
+\end{enumerate}
+
+\section*{Develop Environment}
+
+OS: WSL 2 (Arch Linux 5.10.60.1-microsoft-standard-WSL2) @ windows 11 21H2 (build 22000.318)
+
+Compiler: iverilog 11.0 (stable)
+
+\end{document}

@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}
+\usepackage[
+    a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm
+]{geometry}
+
+\setCJKmainfont{Noto Sans CJK TC}
+\setmainfont{Noto Sans CJK TC}
+
+\renewcommand{\baselinestretch}{1.5}
+
+\begin{document}
+
+\begin{enumerate}
+	\item[1.]
+
+		\begin{enumerate}
+			\item[a.] \(2^4 = 16\) bytes
+			\item[b.] \(2^6 = 64\) 個block
+			\item[c.] \(64 \times (1 + 1 + 22 + 16 \times 8) = 9728\) bits
+			\item[d.] \
+
+				\begin{tabular}[h]{|c|c|c|c|c|}
+					\hline
+					Address & Tag  & Index & Offset & Hit/Miss \\
+					\hline
+					00      & 0x00 & 0x00  & 0x0    & Miss     \\
+					\hline
+					04      & 0x00 & 0x00  & 0x4    & Hit      \\
+					\hline
+					802     & 0x02 & 0x00  & 0x2    & Miss     \\
+					\hline
+					A66     & 0x02 & 0x26  & 0x6    & Miss     \\
+					\hline
+					4CFB    & 0x13 & 0x0F  & 0xB    & Miss     \\
+					\hline
+					A65     & 0x02 & 0x26  & 0x5    & Hit      \\
+					\hline
+					188     & 0x00 & 0x18  & 0x8    & Miss     \\
+					\hline
+					3705    & 0x0D & 0x30  & 0x5    & Miss     \\
+					\hline
+				\end{tabular}
+		\end{enumerate}
+
+	\item[2.]
+
+		\begin{enumerate}
+			\item[a.]
+
+				\((0.60 + 0.05 \times 70) \div 0.60 \approx 6.83\) cycles
+
+			\item[b.]
+
+				每個instruction都是在同一個L1 cache，然後有30\%的instruction要用到data memory，
+				也是在L1做cache，所以所求
+				\(= 1 + (0.7 + 0.3 + 0.3) \times 0.05 \times 70 \div 0.6 \approx 8.58\)
+
+			\item[c.]
+
+				\((0.60 + 0.05 \times (5 + 0.9 \times 70)) \div 0.6 \approx 6.67\) cycles
+
+			\item[d.]
+
+				\(1 + (0.7 + 0.3 + 0.3) \times 0.05 \times
+				(5 + 0.9 \times 70) \div 0.6 \approx 8.37\)
+		\end{enumerate}
+
+	\item[3.]
+
+		\begin{enumerate}
+			\item[a.]
+
+				16KB的page需要14 bit的page offset，因此需要\(2^{40 - 14} = 2^{26}\)個entry
+
+			\item[b.]
+
+				所求\(=3 \times 2^{40 - 14} \times 4 = 768\)MB
+			\item[c.]
+
+				\(\log_2 256 = 8\)，所以還有\(40 - 8 - 14 = 18\) bit給第二個level，
+				因此需要\(2^{18} \times 4 = 1\)MB
+
+			\item[d.]
+
+				\(2^{40} / 2 = 2^{39}\) bytes，一個second level page table可以存
+				\(2^18 \times 2^{14} = 2^{32}\) bytes，所以需要\(2^7\)個table，
+				也就需要共\(3 \times 2^7 \times 1 = 384\)MB
+		\end{enumerate}
+\end{enumerate}
+
+\end{document}

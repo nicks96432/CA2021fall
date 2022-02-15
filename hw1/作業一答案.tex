@@ -1,0 +1,191 @@
+\documentclass{article}
+
+\usepackage{xeCJK}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[
+    a4paper,top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm
+]{geometry}
+
+\setmainfont{Noto Sans CJK TC}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\begin{document}
+
+\section{}
+
+\begin{enumerate}
+    \item[a.]
+
+        \(\displaystyle
+        \mathrm{CPU\ Time} = \frac{\mathrm{Instruction\ Count} \times \mathrm{CPI}}{\mathrm{Clock\ Rate}}
+        \implies \mathrm{Instruction\ Count} = \frac{\mathrm{CPU\ Time} \times \mathrm{Clock\ Rate}}{\mathrm{CPI}}
+        \)
+
+        故P1的MIPS為\(\displaystyle\frac{1 \times 2.7 \times 10 ^ 9}{1.5} \times 10 ^ {-6} = 1800\)
+
+        P2的MIPS為\(\displaystyle\frac{1 \times 3.0 \times 10 ^ 9}{2.0} \times 10 ^ {-6} = 1500\)
+
+        P3的MIPS為\(\displaystyle\frac{1 \times 4.0 \times 10 ^ 9}{2.5} \times 10 ^ {-6} = 1600\)
+
+    \item[b.]
+
+        由a.的結果可知
+
+        P1的instruction數為\(8 \times 1800 \times 10^6 = 1.44 \times 10^{10}\)，cycle數為\(1.44 \times 10^{10} \times 1.5 = 2.16 \times 10^{10}\)
+
+        P2的instruction數為\(8 \times 1500 \times 10^6 = 1.20 \times 10^{10}\)，cycle數為\(1.20 \times 10^{10} \times 2.0 = 2.40 \times 10^{10}\)
+
+        P3的instruction數為\(8 \times 1600 \times 10^6 = 1.28 \times 10^{10}\)，cycle數為\(1.28 \times 10^{10} \times 2.5 = 3.20 \times 10^{10}\)
+
+    \item[c.]
+
+        execution time 0.6倍，CPI 1.35倍，則相同的instruction count下，clock rate需變成
+
+        \(\displaystyle\frac{1.35}{0.6}=2.25\)倍，故所求按照順序分別為
+
+        \(2.7 \times 2.25 = 6.075\) GHz, \(3.0 \times 2.25 = 6.75\) GHz, \(4.0 \times 2.25 = 9\) GHz
+\end{enumerate}
+
+\section{}
+
+\begin{enumerate}
+    \item[a.]
+
+        在1個processor上需要的時間為
+        \(\displaystyle
+        \frac
+        {2.6 \times 10^9 \times 2 + 1.3 \times 10^9 \times 11 + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 9.2625\)秒
+
+        在2個processor上則需要
+        \(\displaystyle
+        \frac
+        {\frac{1}{0.65 \times 2}(2.6 \times 10^9 \times 2 + 1.3 \times 10^9 \times 11) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 7.3875\)秒，比1個processor快約25\%
+
+        在4個processor上則需要
+        \(\displaystyle
+        \frac
+        {\frac{1}{0.65 \times 4}(2.6 \times 10^9 \times 2 + 1.3 \times 10^9 \times 11) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 4.4625\)秒，比1個processor快約108\%
+
+        在8個processor上則需要
+        \(\displaystyle
+        \frac
+        {\frac{1}{0.65 \times 8}(2.6 \times 10^9 \times 2 + 1.3 \times 10^9 \times 11) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 2.7\)秒，比1個processor快約243\%
+
+        \item[b.]
+
+        此時在1個processor上需要的時間為
+        \(\displaystyle
+        \frac
+        {2.6 \times 10^9 \times 1 + 1.3 \times 10^9 \times 22 + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 14.1375\)秒
+
+        在2個processor上則需要
+        \(\displaystyle
+        \frac
+        {\frac{1}{0.65 \times 2}(2.6 \times 10^9 \times 1 + 1.3 \times 10^9 \times 22) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 11.1375\)秒
+
+        在4個processor上則需要
+        \(\displaystyle
+        \frac
+        {\frac{1}{0.65 \times 4}(2.6 \times 10^9 \times 1 + 1.3 \times 10^9 \times 22) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 6.1375\)秒
+
+        在8個processor上則需要
+        \(\displaystyle
+        \frac
+        {\frac{1}{0.65 \times 8}(2.6 \times 10^9 \times 1 + 1.3 \times 10^9 \times 22) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \)
+
+        \(= 3.6375\)秒
+    \item[c.]
+
+        \(\displaystyle
+        7.3875 = \frac
+        {2.6 \times 10^9 \times 2 + 1.3 \times 10^9 \times (11 - x) + 3.9 \times 10^8 \times 7}
+        {2.4 \times 10^9}
+        \implies\)所求\(= x \approx 3.4615\)
+\end{enumerate}
+
+\section{}
+
+\begin{enumerate}
+    \item[a.]
+
+        \(\displaystyle
+        \mathrm{CPU\ Time} = \frac{\mathrm{Instruction\ Count} \times \mathrm{CPI}}{\mathrm{Clock\ Rate}}
+        \implies \mathrm{CPI} = \frac{\mathrm{CPU\ Time} \times \mathrm{Clock\ Rate}}{\mathrm{Instruction\ Count}}
+        \)
+
+        故所求\(\displaystyle
+        = \frac{772 \times 2.2 \times 10^9}{2.123 \times 10^{12}}
+        = 0.8\)
+
+    \item[b.]
+
+        所求\(\displaystyle
+        = \frac{9650}{772}
+        = 12.5
+        \)
+
+    \item[c.]
+
+        instruction count變1.15倍，CPI不變，則CPU time也會變1.15倍
+
+        故所求\(= 772 \times (1.15 - 1) = 115.8\)秒
+
+\end{enumerate}
+
+\section{}
+
+\begin{enumerate}
+    \item[a.]
+
+        P1的global CPI為\(0.2 \times 1 + 0.25 \times 2 + 0.45 \times 3 + 0.1 \times 2 = 2.25\)
+
+        P2的global CPI為\(0.2 \times 1.5 + 0.25 \times 3 + 0.45 \times 2 + 0.1 \times 2 = 2.15\)
+
+    \item[b.]
+
+        P1的CPU time為\(\displaystyle
+        \frac{2.0 \times 10^6 \times 2.25}{2.4 \times 10^9}
+        = 1.875 \times 10^{-3}
+        \)秒
+
+        P2的CPU time為\(\displaystyle
+        \frac{2.0 \times 10^6 \times 2.15}{2.2 \times 10^9}
+        \approx 1.954 \times 10^{-3}
+        \)秒
+
+        故P1比較快
+
+\end{enumerate}
+
+\end{document}

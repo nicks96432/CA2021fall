@@ -1,0 +1,116 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[
+    a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm
+]{geometry}
+\usepackage{minted}
+\usepackage{xeCJK}
+
+\setCJKmainfont{Noto Sans CJK TC}
+\setmainfont{Noto Sans CJK TC}
+
+\setlength{\parindent}{0cm}
+\renewcommand{\baselinestretch}{1.5}
+
+\begin{document}
+
+\begin{enumerate}
+    \item[1.] Control \& ALU\textunderscore Control
+
+        相比Homework 4，這次的Control多了從Hazard Detection Unit來的
+        \mintinline{text}{NoOp_i}，還有接到Data Memory相關的幾個control
+        signal。這次的Control Unit在收到opcode全部都是0 (出現在pipeline flush)
+        或是\mintinline{text}{NoOp_i}的時候把所有輸出的訊號都設為0，否則就根據
+        opcode的內容設定相應的control signal。
+
+        ALU Control則和上次大同小異，同樣是根據\mintinline{text}{ALUOp_i}和
+        \mintinline{text}{funct_i}來決定\mintinline{text}{ALUCtrl_o}，不過
+        這次多了判斷load和store instruction的\mintinline{text}{funct3}。
+
+    \item[2.] Pipeline Registers
+
+        我把四組Pipeline Registers放在\mintinline{text}{pipeline_registers}
+        資料夾下，並從\mintinline{text}{CPU.v} include這四個module。這4組
+        registers會在程式開始時的reset訊號產生時將各自的register重設成0。每次到
+        clock的positive edge就把input用unblocking的方式存到對應的register。
+
+        其中的IF\textunderscore ID\textunderscore REGISTER比較特別，它還會從
+        Hazard Detection Unit讀要不要Stall的訊號，以及從判斷要不要branch的AND
+        Gate讀Flush訊號。如果要Stall就不會把register的內容換成新的，如果要Flush
+        就會把register歸零。
+
+    \item[3.] Forwarding Unit
+
+        它會讀EX\textunderscore MEM\textunderscore REGISTER的rd和
+        ID\textunderscore EX\textunderscore REGISTER的rs1或rs2是否相同，
+        如果相同就把EX\textunderscore MEM\textunderscore REGISTER的
+        \mintinline{text}{ALUResult} forward給相對應的ALU輸入位置，這樣就可以
+        避免EX hazard。
+
+        如果沒有EX hazard，那就用類似的方法判斷有沒有MEM hazard，並在正確的時機
+        把WB階段的\mintinline{text}{WriteData} forward給ALU。
+
+    \item[4.] Hazard Detection Unit
+
+        在Hazard\textunderscore Detection.v。它會讀EX階段的instruction
+        是否要MemRead和rd，以及ID階段的rs1和rs2，如果EX需要讀記憶體，而且rd
+        和ID階段的rs1或rs2相同時，就輸出stall訊號給IF\textunderscore ID
+        \textunderscore REGISTER，來避免load-use hazard。
+
+    \item[5.] testbench
+
+        我沒有修改testbench，因為我把pipeline register initialization放在
+        它們各自的module裡面。
+
+    \item[6.] Others
+
+        \begin{enumerate}
+            \item[(a)] Imm\textunderscore Gen
+
+                負責從instruction把immediate值讀出來進行sign extension並傳給ALU
+                還有負責branch instruction的Adder。
+
+            \item[(b)] defs
+
+                這個檔案裡定義了各種opcode，以及ALU control的signal。
+
+                \pagebreak
+
+            \item[(c)] Misc.
+
+                \begin{enumerate}
+                    \item[i.] MUX32\textunderscore 2
+
+                        和Homework 4的MUX一樣，會根據輸入的訊號決定輸出
+                        \mintinline{text}{data1}或\mintinline{text}{data2}的其中一個
+
+                    \item[ii.] MUX32\textunderscore 4
+
+                        這個MUX會根據兩個bit的訊號，從4個輸入中決定要輸出的一個。使用3個
+                        MUX32\textunderscore 2連接而成。
+
+                    \item[iii.] Add32\textunderscore 2
+
+                        這個circuit會讀入兩個數字，並輸出它們的和，不考慮溢位。
+
+                    \item[iv.] Equal32\textunderscore 2
+
+                        這個circuit會讀入兩個數字，並輸出兩數是否相等。
+
+                    \item[v.] SL1\textunderscore 32
+
+                        這個circuit會讀入一個數字，並輸出其bit shift left 1的值。
+
+                \end{enumerate}
+        \end{enumerate}
+
+    \item[7.] CPU
+
+        在這裡把所有東西根據spec的datapath接在一起，並且把reset接到各個pipeline
+        register上。判斷是否要flush的AND Gate也在這裡，因為verilog的AND gate
+        直接用assign語法就可以做出來了，所以我沒有放在額外的檔案裡。在testbench
+        的Flush也是接到這個AND Gate上。
+\end{enumerate}
+
+\end{document}
